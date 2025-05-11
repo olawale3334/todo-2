@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="./style.css">
+    <title>Document</title>
+</head>
+<body>
+    <div class="bg-gray-800 h-screen">
+        <div class="max-w-md bg-pink-600 mx-auto p-5">
+            <h1 class="  text-center text-white font-bold text-2xl">ADD  TODOS</h1>
+            <!-- <div >
+                <input type="text" placeholder="my TODOS"  class="py-4  px-10">
+                <button class="bg-black text-white py-4 px-5" onclick=""> ADD</button>
+            </div> -->
+            <div class="mt-10">
+                <h1 class="  text-center text-white font-bold text-2xl">LIST OF MY TODOS</h1>
+                <div class="p-6" id="todoList"></div>
+            </div>
+        </div>
+    </div>
+    <script>
+
+
+            let form = document.querySelector("form");
+            let todos = document.querySelector("#todoList");
+
+            // form.addEventListener("submit", (e) => {
+            // e.preventDefault();
+            // addTodo();
+            // });
+
+            function addTodo() {
+            let input = document.querySelector("input");
+            let id = new Date().getTime();
+            let todo = document.createElement("p");
+            todo.innerHTML = `
+                <input type="checkbox" onclick="check(${id})" id="${id}" class="text-[3rem] mr-5">
+                <span class="text-2xl text-white">${input.value}</span>
+                <button class="bg-red-400 p-3 text-white" onclick="deleteTodo(${id})">Delete</button>
+            `;
+            todos.appendChild(todo);
+            input.value = "";
+            }
+
+            function check(id) {
+            let input = document.getElementById(id);
+            let item = input.nextElementSibling;
+            item.classList.toggle("line-through");
+            }
+
+            function deleteTodo(id) {
+            let input = document.getElementById(id);
+            let item = input.parentElement;
+            item.remove();
+            }
+
+            fetch("https://jsonplaceholder.typicode.com/todos")
+            .then((response) => response.json())
+            .then((data) => {
+                data.forEach((todo) => {
+                let id = todo.id;
+                let todoItem = document.createElement("p");
+                todoItem.innerHTML = `
+                    <input type="checkbox" onclick="check(${id})" id="${id}" class="text-[3rem] mr-10">
+                    <span class="text-2xl text-white">${todo.title}</span>
+                    <button class="bg-red-400 p-3 text-white" onclick="deleteTodo(${id})">Delete</button>
+                `;
+                todos.appendChild(todoItem);
+                });
+            });
+
+
+
+
+
+
+
+       
+
+                
+    </script>
+</body>
+</html>
